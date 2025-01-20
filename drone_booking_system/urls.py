@@ -86,6 +86,14 @@ urlpatterns = [
     path('view-bookings/', view_bookings, name='view_bookings'),  # View user bookings page
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),  # Login page
     path('available-times/', views.available_times, name='available_times'),  # Get available times
+
+
+
+
+
+
+
+    
 ]
 
 # Serve static and media files in development

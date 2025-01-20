@@ -10,6 +10,45 @@ def instructor_details(request):
     instructor = Instructor.objects.first()
     return render(request, 'instructor_details.html', {'instructor': instructor})
 
+# def slot_booking(request):
+#     if request.method == 'POST':
+#         name = request.POST['name']
+#         email = request.POST['email']
+#         address = request.POST['address']
+#         phone_number = request.POST['phone_number']
+#         drone_details = request.POST['drone_details']
+#         date = request.POST['date']
+#         time = request.POST['time']
+
+#         # Find the specific slot
+#         slot = BookingSlot.objects.filter(date=date, time=time, is_booked=False).first()
+#         if not slot:
+#             return HttpResponse('The selected slot is already booked or unavailable.')
+
+#         # Create booking and mark slot as booked
+#         booking = UserBooking.objects.create(
+#             name=name, email=email, address=address,
+#             phone_number=phone_number, drone_details=drone_details, slot=slot
+#         )
+#         slot.is_booked = True
+#         slot.save()
+
+#         send_mail(
+#             'Booking Confirmation',
+#             f'Thank you for booking! Your slot on {slot.date} at {slot.time} is confirmed.',
+#             'noreply@example.com',
+#             [email]
+#         )
+#         # return redirect('payment_page')
+#         return redirect('payment', booking_id=booking.id)
+
+
+#     slots = BookingSlot.objects.filter(is_booked=False)
+#     return render(request, 'slot_booking.html', {'slots': slots})
+
+
+
+
 def slot_booking(request):
     if request.method == 'POST':
         name = request.POST['name']
@@ -25,29 +64,39 @@ def slot_booking(request):
         if not slot:
             return HttpResponse('The selected slot is already booked or unavailable.')
 
-        # Create booking and mark slot as booked
+        # Create a booking but do not mark the slot as booked yet
         booking = UserBooking.objects.create(
             name=name, email=email, address=address,
             phone_number=phone_number, drone_details=drone_details, slot=slot
         )
-        slot.is_booked = True
-        slot.save()
 
-        send_mail(
-            'Booking Confirmation',
-            f'Thank you for booking! Your slot on {slot.date} at {slot.time} is confirmed.',
-            'noreply@example.com',
-            [email]
-        )
-        # return redirect('payment_page')
+        # Redirect to the payment page with the booking ID
         return redirect('payment', booking_id=booking.id)
-
 
     slots = BookingSlot.objects.filter(is_booked=False)
     return render(request, 'slot_booking.html', {'slots': slots})
 
-def payment_page(request):
-    return HttpResponse('<h1>Dummy Payment Page</h1><a href="/">Back to Home</a>')
+
+from django.shortcuts import get_object_or_404
+
+def payment_page(request, booking_id):
+    booking = get_object_or_404(UserBooking, id=booking_id)
+
+    if request.method == 'POST':
+        # Simulate payment success
+        booking.slot.is_booked = True
+        booking.slot.save()
+
+        send_mail(
+            'Booking Confirmation',
+            f'Thank you for your payment! Your slot on {booking.slot.date} at {booking.slot.time} is confirmed.',
+            'noreply@example.com',
+            [booking.email]
+        )
+        return HttpResponse('<h1>Payment Successful!</h1><p>Your slot is confirmed.</p>')
+
+    return render(request, 'payment_page.html', {'booking': booking})
+
 
 @login_required
 def view_bookings(request):
