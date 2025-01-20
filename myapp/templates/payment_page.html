@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Page</title>
+</head>
+<body>
+    <h1>Payment Page</h1>
+    <p>Please make your payment to proceed.</p>
+    <form method="post" action="{% url 'confirm_payment' %}">
+        {% csrf_token %}
+        <button type="submit">Confirm Payment</button>
+    </form>
+</body>
+</html>
+
+
+
+
+
+
+

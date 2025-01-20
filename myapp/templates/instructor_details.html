@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instructor Details</title>
+</head>
+<body>
+    <h1>{{ instructor.name }}</h1>
+    <img src="{{ instructor.photo.url }}" alt="Photo">
+    <p>RPC Number: {{ instructor.rpc_number }}</p>
+    <p>Experience: {{ instructor.experience }}</p>
+    <p>Issued Date: {{ instructor.issued_date }}</p>
+    <p>Phone Number: {{ instructor.phone_number }}</p>
+    <a href="/book/">Book Now</a>
+</body>
+</html>
