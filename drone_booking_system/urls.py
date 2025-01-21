@@ -86,8 +86,11 @@ urlpatterns = [
     path('view-bookings/', view_bookings, name='view_bookings'),  # View user bookings page
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),  # Login page
     path('available-times/', views.available_times, name='available_times'),  # Get available times
+    
+      path('slot-booking/', views.slot_booking, name='slot_booking'),
+    path('get-booked-slots/', views.get_booked_slots, name='get_booked_slots'),
 
-
+    path('view-bookings/', views.view_bookings, name='view_bookings'),
 
 
 
